@@ -52,4 +52,17 @@ class TransactionListViewModel: ObservableObject {
         
         self.totalSpend = totalSpend
     }
+    
+    func pin(with transactionID: Int) {
+        var transaction = self.transactions.first(where: { $0.id  == transactionID })
+        let index = self.transactions.firstIndex(where: { $0.id ==  transactionID })
+        transaction?.pinned.toggle()
+        
+        if let index = index,
+           let transaction = transaction {
+            transactions[index] = transaction
+        }
+        
+        calculateTotalSpend()
+    }
 }

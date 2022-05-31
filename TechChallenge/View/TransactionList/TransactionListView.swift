@@ -16,7 +16,9 @@ struct TransactionListView: View {
             
             List {
                 ForEach(viewModel.transactions) { transaction in
-                    TransactionView(transaction: transaction)
+                    TransactionView(transaction: transaction) {
+                        viewModel.pin(with: transaction.id)
+                    }
                 }
             }
             .animation(.easeIn)

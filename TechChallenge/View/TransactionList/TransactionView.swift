@@ -9,6 +9,7 @@ import SwiftUI
 
 struct TransactionView: View {
     @State var transaction: TransactionModel
+    var tapAction: (() -> Void)?
     
     var body: some View {
         VStack {
@@ -55,6 +56,7 @@ struct TransactionView: View {
         .clipShape(RoundedRectangle(cornerRadius: 8.0))
         .onTapGesture {
             self.transaction.pinned = !transaction.pinned
+            tapAction?()
         }
     }
 }
