@@ -45,7 +45,9 @@ class TransactionListViewModel: ObservableObject {
     func calculateTotalSpend() {
         var totalSpend = 0.0
         transactions.forEach { transaction in
-            totalSpend += transaction.amount
+            if transaction.pinned == true {
+                totalSpend += transaction.amount
+            }
         }
         
         self.totalSpend = totalSpend
