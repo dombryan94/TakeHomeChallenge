@@ -15,6 +15,7 @@ struct TechChallengeApp: App {
             TabView {
                 NavigationView {
                     TransactionListView()
+                        .environmentObject(TransactionListViewModel())
                 }
                 .tabItem {
                     Label("Transactions", systemImage: "list.bullet")
