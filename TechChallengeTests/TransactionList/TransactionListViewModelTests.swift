@@ -22,6 +22,7 @@ class TransactionListViewModelTests: XCTestCase {
         viewModel = nil
     }
     
+    // MARK: - Filter Tests
     func test_filterTransactions_food() {
         viewModel?.filterTransactions(by: "food")
         XCTAssertEqual(viewModel?.transactions.count, 5)
@@ -64,5 +65,19 @@ class TransactionListViewModelTests: XCTestCase {
         
         viewModel?.filterTransactions(by: "all")
         XCTAssertEqual(viewModel?.transactions.count, 13)
+    }
+    
+    // MARK: - Sum of Transactions Tests
+    func test_sumOfTransaction_food() {
+        viewModel?.filterTransactions(by: "food")
+        XCTAssertEqual(viewModel?.totalSpend, 74.28)
+    }
+    
+    func test_sumOfTransaction_food_thenAll_formatted() {
+        viewModel?.filterTransactions(by: "food")
+        XCTAssertEqual(viewModel?.totalSpend, 74.28)
+        
+        viewModel?.filterTransactions(by: "all")
+        XCTAssertEqual(viewModel?.totalSpend.formatted(), "472.08")
     }
 }

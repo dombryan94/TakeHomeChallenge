@@ -9,6 +9,8 @@ import SwiftUI
 
 class TransactionListViewModel: ObservableObject {
     @Published var transactions: [TransactionModel] = ModelData.sampleTransactions
+    @Published var totalSpend: Double = 0.0
+    @Published var selectedFilter: String = "all"
     
     var filters: [String] {
         var filters = ["all"]
@@ -36,5 +38,16 @@ class TransactionListViewModel: ObservableObject {
         } else {
             transactions = ModelData.sampleTransactions
         }
+        selectedFilter = filter
+        calculateTotalSpend()
+    }
+    
+    func calculateTotalSpend() {
+        var totalSpend = 0.0
+        transactions.forEach { transaction in
+            totalSpend += transaction.amount
+        }
+        
+        self.totalSpend = totalSpend
     }
 }

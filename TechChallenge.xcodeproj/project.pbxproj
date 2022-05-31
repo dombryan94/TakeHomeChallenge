@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		3B02742B28462A1000FC7E06 /* SumView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B02742A28462A1000FC7E06 /* SumView.swift */; };
 		3B759ECA28453ED900D47EF5 /* TransactionListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B759EC928453ED900D47EF5 /* TransactionListViewModel.swift */; };
 		3B759ECC28453F5100D47EF5 /* FilterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B759ECB28453F5100D47EF5 /* FilterView.swift */; };
 		3B759ECF28461A5D00D47EF5 /* TransactionListViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B759ECE28461A5C00D47EF5 /* TransactionListViewModelTests.swift */; };
@@ -40,6 +41,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		3B02742A28462A1000FC7E06 /* SumView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SumView.swift; sourceTree = "<group>"; };
 		3B759EC928453ED900D47EF5 /* TransactionListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionListViewModel.swift; sourceTree = "<group>"; };
 		3B759ECB28453F5100D47EF5 /* FilterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilterView.swift; sourceTree = "<group>"; };
 		3B759ECE28461A5C00D47EF5 /* TransactionListViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionListViewModelTests.swift; sourceTree = "<group>"; };
@@ -147,6 +149,7 @@
 				3CE226B426B0523C00B3D085 /* TransactionListView.swift */,
 				3B759EC928453ED900D47EF5 /* TransactionListViewModel.swift */,
 				3B759ECB28453F5100D47EF5 /* FilterView.swift */,
+				3B02742A28462A1000FC7E06 /* SumView.swift */,
 			);
 			path = TransactionList;
 			sourceTree = "<group>";
@@ -325,6 +328,7 @@
 				3B759ECC28453F5100D47EF5 /* FilterView.swift in Sources */,
 				3CE2268426B007D200B3D085 /* TechChallengeApp.swift in Sources */,
 				3C296ED126B404A5006DF667 /* Path.swift in Sources */,
+				3B02742B28462A1000FC7E06 /* SumView.swift in Sources */,
 				3CE226B926B0548C00B3D085 /* TransactionView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

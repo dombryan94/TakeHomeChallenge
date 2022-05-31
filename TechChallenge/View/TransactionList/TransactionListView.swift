@@ -23,6 +23,12 @@ struct TransactionListView: View {
             .listStyle(PlainListStyle())
             .navigationBarTitleDisplayMode(.inline)
             .navigationTitle("Transactions")
+            
+            SumView()
+                .padding(4)
+        }
+        .onAppear {
+            viewModel.calculateTotalSpend()
         }
     }
 }
