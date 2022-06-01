@@ -41,6 +41,7 @@ struct TransactionModel {
     let accountName: String
     let provider: Provider?
     var pinned: Bool = true
+    var show: Bool = true
 }
 
 extension TransactionModel: Identifiable {}

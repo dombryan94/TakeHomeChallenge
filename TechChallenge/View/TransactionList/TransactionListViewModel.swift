@@ -5,12 +5,28 @@
 //  Created by Dom Bryan on 30/05/2022.
 //
 
+import Combine
 import SwiftUI
 
 class TransactionListViewModel: ObservableObject {
     @Published var transactions: [TransactionModel] = ModelData.sampleTransactions
     @Published var totalSpend: Double = 0.0
     @Published var selectedFilter: String = "all"
+    
+    var subscriber: Cancellable?
+    
+    init() {
+        subscriber = $transactions
+            .map {
+                $0
+                    .filter(\.pinned)
+                    .filter(\.show)
+                    .reduce(0, { partialResult, model in
+                        partialResult + model.amount
+                    })
+            }
+            .assign(to: \.totalSpend, on: self)
+    }
     
     var filters: [String] {
         var filters = ["all"]
@@ -34,23 +50,19 @@ class TransactionListViewModel: ObservableObject {
     
     func filterTransactions(by filter: String) {
         if let category = getCategory(for: filter) {
-            transactions = ModelData.sampleTransactions.filter { $0.category == category }
+            for (index, transaction) in transactions.enumerated() {
+                if transaction.category ==  category {
+                    transactions[index].show = true
+                } else {
+                    transactions[index].show = false
+                }
+            }
         } else {
-            transactions = ModelData.sampleTransactions
-        }
-        selectedFilter = filter
-        calculateTotalSpend()
-    }
-    
-    func calculateTotalSpend() {
-        var totalSpend = 0.0
-        transactions.forEach { transaction in
-            if transaction.pinned == true {
-                totalSpend += transaction.amount
+            for (index, transaction) in transactions.enumerated() {
+                transactions[index].show = true
             }
         }
-        
-        self.totalSpend = totalSpend
+        selectedFilter = filter
     }
     
     func pin(with transactionID: Int) {
@@ -62,7 +74,5 @@ class TransactionListViewModel: ObservableObject {
            let transaction = transaction {
             transactions[index] = transaction
         }
-        
-        calculateTotalSpend()
     }
 }

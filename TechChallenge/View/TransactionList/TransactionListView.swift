@@ -15,9 +15,9 @@ struct TransactionListView: View {
             FilterView(viewModel: viewModel)
             
             List {
-                ForEach(viewModel.transactions) { transaction in
-                    TransactionView(transaction: transaction) {
-                        viewModel.pin(with: transaction.id)
+                ForEach(viewModel.transactions.indexed(), id: \.1.id) { index, transaction in
+                    if transaction.show == true {
+                        TransactionView(transaction: $viewModel.transactions[index])
                     }
                 }
             }
@@ -28,9 +28,6 @@ struct TransactionListView: View {
             
             SumView()
                 .padding(4)
-        }
-        .onAppear {
-            viewModel.calculateTotalSpend()
         }
     }
 }
