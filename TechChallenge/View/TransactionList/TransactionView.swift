@@ -8,8 +8,7 @@
 import SwiftUI
 
 struct TransactionView: View {
-    @State var transaction: TransactionModel
-    var tapAction: (() -> Void)?
+    @Binding var transaction: TransactionModel
     
     var body: some View {
         VStack {
@@ -55,8 +54,7 @@ struct TransactionView: View {
         .background(Color.accentColor.opacity(0.1))
         .clipShape(RoundedRectangle(cornerRadius: 8.0))
         .onTapGesture {
-            self.transaction.pinned = !transaction.pinned
-            tapAction?()
+            self.transaction.pinned.toggle()
         }
     }
 }
@@ -65,8 +63,8 @@ struct TransactionView: View {
 struct TransactionView_Previews: PreviewProvider {
     static var previews: some View {
         VStack {
-            TransactionView(transaction: ModelData.sampleTransactions[0])
-            TransactionView(transaction: ModelData.sampleTransactions[1])
+            TransactionView(transaction: .constant(ModelData.sampleTransactions[0]))
+            TransactionView(transaction: .constant(ModelData.sampleTransactions[1])) 
         }
         .padding()
         .previewLayout(.sizeThatFits)

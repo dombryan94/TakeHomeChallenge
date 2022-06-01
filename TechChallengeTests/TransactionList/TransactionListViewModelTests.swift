@@ -24,47 +24,74 @@ class TransactionListViewModelTests: XCTestCase {
     
     // MARK: - Filter Tests
     func test_filterTransactions_food() {
-        viewModel?.filterTransactions(by: "food")
-        XCTAssertEqual(viewModel?.transactions.count, 5)
-        XCTAssertEqual(viewModel?.transactions.first?.category, TransactionModel.Category.food)
+        viewModel?.filterInput.send("food")
+        var numberOfFilterTransactions = 0
+        viewModel?.transactions.forEach {
+            if $0.show == true { numberOfFilterTransactions += 1}
+        }
+        XCTAssertEqual(numberOfFilterTransactions, 5)
     }
     
     func test_filterTransactions_health() {
-        viewModel?.filterTransactions(by: "health")
-        XCTAssertEqual(viewModel?.transactions.count, 1)
-        XCTAssertEqual(viewModel?.transactions.first?.category, TransactionModel.Category.health)
+        viewModel?.filterInput.send("health")
+        var numberOfFilterTransactions = 0
+        viewModel?.transactions.forEach {
+            if $0.show == true { numberOfFilterTransactions += 1}
+        }
+        XCTAssertEqual(numberOfFilterTransactions, 1)
     }
     
     func test_filterTransactions_entertainment() {
-        viewModel?.filterTransactions(by: "entertainment")
-        XCTAssertEqual(viewModel?.transactions.count, 1)
-        XCTAssertEqual(viewModel?.transactions.first?.category, TransactionModel.Category.entertainment)
+        viewModel?.filterInput.send("entertainment")
+        var numberOfFilterTransactions = 0
+        viewModel?.transactions.forEach {
+            if $0.show == true { numberOfFilterTransactions += 1}
+        }
+        XCTAssertEqual(numberOfFilterTransactions, 1)
     }
     
     func test_filterTransactions_shopping() {
-        viewModel?.filterTransactions(by: "shopping")
-        XCTAssertEqual(viewModel?.transactions.count, 3)
-        XCTAssertEqual(viewModel?.transactions.first?.category, TransactionModel.Category.shopping)
+        viewModel?.filterInput.send("shopping")
+        var numberOfFilterTransactions = 0
+        viewModel?.transactions.forEach {
+            if $0.show == true { numberOfFilterTransactions += 1}
+        }
+        XCTAssertEqual(numberOfFilterTransactions, 3)
     }
     
     func test_filterTransactions_travel() {
-        viewModel?.filterTransactions(by: "travel")
-        XCTAssertEqual(viewModel?.transactions.count, 3)
-        XCTAssertEqual(viewModel?.transactions.first?.category, TransactionModel.Category.travel)
+        viewModel?.filterInput.send("travel")
+        var numberOfFilterTransactions = 0
+        viewModel?.transactions.forEach {
+            if $0.show == true { numberOfFilterTransactions += 1}
+        }
+        XCTAssertEqual(numberOfFilterTransactions, 3)
     }
     
     func test_filterTransactions_all() {
-        viewModel?.filterTransactions(by: "all")
-        XCTAssertEqual(viewModel?.transactions.count, 13)
+        viewModel?.filterInput.send("all")
+        var numberOfFilterTransactions = 0
+        viewModel?.transactions.forEach {
+            if $0.show == true { numberOfFilterTransactions += 1}
+        }
+        XCTAssertEqual(numberOfFilterTransactions, 13)
     }
     
     func test_filterTransactions_food_thenAll() {
-        viewModel?.filterTransactions(by: "food")
-        XCTAssertEqual(viewModel?.transactions.count, 5)
-        XCTAssertEqual(viewModel?.transactions.first?.category, TransactionModel.Category.food)
+        var numberOfFilterTransactions = 0
         
-        viewModel?.filterTransactions(by: "all")
-        XCTAssertEqual(viewModel?.transactions.count, 13)
+        viewModel?.filterInput.send("food")
+        viewModel?.transactions.forEach {
+            if $0.show == true { numberOfFilterTransactions += 1}
+        }
+        XCTAssertEqual(numberOfFilterTransactions, 5)
+        
+        numberOfFilterTransactions = 0
+        viewModel?.filterInput.send("all")
+        viewModel?.transactions.forEach {
+            if $0.show == true { numberOfFilterTransactions += 1}
+        }
+        XCTAssertEqual(numberOfFilterTransactions, 13)
     }
     
     // MARK: - Sum of Transactions Tests

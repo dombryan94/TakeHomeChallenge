@@ -5,12 +5,42 @@
 //  Created by Dom Bryan on 30/05/2022.
 //
 
+import Combine
 import SwiftUI
 
 class TransactionListViewModel: ObservableObject {
     @Published var transactions: [TransactionModel] = ModelData.sampleTransactions
     @Published var totalSpend: Double = 0.0
     @Published var selectedFilter: String = "all"
+    
+    let filterInput: PassthroughSubject<String, Never> = .init()
+    
+    var subscriber: Cancellable?
+    
+    @Published var categoryTotals: [TransactionModel.Category: String] = [:]
+    var categoryPercentageTotals: [TransactionModel.Category: Double] = [:]
+    
+    init() {
+        let filtered = filterInput
+            .flatMap { category -> Published<[TransactionModel]>.Publisher in
+                self.filterTransactions(by: category)
+                return self.$transactions
+            }
+        
+        subscriber = Publishers.Merge(filtered, $transactions.share())
+            .map {
+                $0
+                    .filter(\.pinned)
+                    .filter(\.show)
+                    .reduce(0, { partialResult, model in
+                        partialResult + model.amount
+                    })
+            }
+            .sink(receiveValue: { total in
+                self.totalSpend  = total
+                self.calculateCategoryPercentageOfTotal()
+            })
+    }
     
     var filters: [String] {
         var filters = ["all"]
@@ -34,23 +64,19 @@ class TransactionListViewModel: ObservableObject {
     
     func filterTransactions(by filter: String) {
         if let category = getCategory(for: filter) {
-            transactions = ModelData.sampleTransactions.filter { $0.category == category }
+            for (index, transaction) in transactions.enumerated() {
+                if transaction.category ==  category {
+                    transactions[index].show = true
+                } else {
+                    transactions[index].show = false
+                }
+            }
         } else {
-            transactions = ModelData.sampleTransactions
-        }
-        selectedFilter = filter
-        calculateTotalSpend()
-    }
-    
-    func calculateTotalSpend() {
-        var totalSpend = 0.0
-        transactions.forEach { transaction in
-            if transaction.pinned == true {
-                totalSpend += transaction.amount
+            for (index, _) in transactions.enumerated() {
+                transactions[index].show = true
             }
         }
-        
-        self.totalSpend = totalSpend
+        selectedFilter = filter
     }
     
     func pin(with transactionID: Int) {
@@ -62,7 +88,39 @@ class TransactionListViewModel: ObservableObject {
            let transaction = transaction {
             transactions[index] = transaction
         }
+    }
+    
+    private func calculateTotal(for category: TransactionModel.Category) -> Double {
+        transactions
+            .filter { $0.category == category }
+            .filter { $0.pinned == true }
+            .reduce(0, { partialResult, model in
+                partialResult + model.amount
+            })
+    }
+    
+    func calculateCategoryTotal() {
+        TransactionModel.Category.allCases.forEach { category in
+            categoryTotals[category] = calculateTotal(for: category).formatted()
+        }
+    }
+    
+    func calculateCategoryPercentageOfTotal() {
+        TransactionModel.Category.allCases.forEach { category in
+            var percentage = calculateTotal(for: category) / totalSpend
+            categoryPercentageTotals[category] = Double(round(100 * percentage) / 100)
+        }
+    }
+    
+    func getOffset(for categoryIndex: Int) -> Double {
+        var offset: Double = 100.0
         
-        calculateTotalSpend()
+        for i in categoryIndex...categoryPercentageTotals.count {
+            if let category = TransactionModel.Category[i],
+               let ratio = categoryPercentageTotals[category] {
+                offset = offset - ratio
+            }
+        }
+        return offset
     }
 }
