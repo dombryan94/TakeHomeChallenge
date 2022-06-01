@@ -17,6 +17,9 @@ class TransactionListViewModel: ObservableObject {
     
     var subscriber: Cancellable?
     
+    @Published var categoryTotals: [TransactionModel.Category: String] = [:]
+    var categoryPercentageTotals: [TransactionModel.Category: Double] = [:]
+    
     init() {
         let filtered = filterInput
             .flatMap { category -> Published<[TransactionModel]>.Publisher in
@@ -24,7 +27,7 @@ class TransactionListViewModel: ObservableObject {
                 return self.$transactions
             }
         
-        subscriber = Publishers.Merge(filtered, $transactions)
+        subscriber = Publishers.Merge(filtered, $transactions.share())
             .map {
                 $0
                     .filter(\.pinned)
@@ -33,7 +36,10 @@ class TransactionListViewModel: ObservableObject {
                         partialResult + model.amount
                     })
             }
-            .assign(to: \.totalSpend, on: self)
+            .sink(receiveValue: { total in
+                self.totalSpend  = total
+                self.calculateCategoryPercentageOfTotal()
+            })
     }
     
     var filters: [String] {
@@ -82,5 +88,39 @@ class TransactionListViewModel: ObservableObject {
            let transaction = transaction {
             transactions[index] = transaction
         }
+    }
+    
+    private func calculateTotal(for category: TransactionModel.Category) -> Double {
+        transactions
+            .filter { $0.category == category }
+            .filter { $0.pinned == true }
+            .reduce(0, { partialResult, model in
+                partialResult + model.amount
+            })
+    }
+    
+    func calculateCategoryTotal() {
+        TransactionModel.Category.allCases.forEach { category in
+            categoryTotals[category] = calculateTotal(for: category).formatted()
+        }
+    }
+    
+    func calculateCategoryPercentageOfTotal() {
+        TransactionModel.Category.allCases.forEach { category in
+            var percentage = calculateTotal(for: category) / totalSpend
+            categoryPercentageTotals[category] = Double(round(100 * percentage) / 100)
+        }
+    }
+    
+    func getOffset(for categoryIndex: Int) -> Double {
+        var offset: Double = 100.0
+        
+        for i in categoryIndex...categoryPercentageTotals.count {
+            if let category = TransactionModel.Category[i],
+               let ratio = categoryPercentageTotals[category] {
+                offset = offset - ratio
+            }
+        }
+        return offset
     }
 }
