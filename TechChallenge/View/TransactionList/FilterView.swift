@@ -15,7 +15,7 @@ struct FilterView: View {
             HStack {
                 ForEach(viewModel.filters, id: \.self) { filter in
                     Button {
-                        viewModel.filterTransactions(by: filter)
+                        viewModel.filterInput.send(filter)
                     } label: {
                         Text(String(filter))
                             .font(.system(.title2))

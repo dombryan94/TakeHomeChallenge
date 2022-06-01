@@ -13,10 +13,18 @@ class TransactionListViewModel: ObservableObject {
     @Published var totalSpend: Double = 0.0
     @Published var selectedFilter: String = "all"
     
+    let filterInput: PassthroughSubject<String, Never> = .init()
+    
     var subscriber: Cancellable?
     
     init() {
-        subscriber = $transactions
+        let filtered = filterInput
+            .flatMap { category -> Published<[TransactionModel]>.Publisher in
+                self.filterTransactions(by: category)
+                return self.$transactions
+            }
+        
+        subscriber = Publishers.Merge(filtered, $transactions)
             .map {
                 $0
                     .filter(\.pinned)
@@ -58,7 +66,7 @@ class TransactionListViewModel: ObservableObject {
                 }
             }
         } else {
-            for (index, transaction) in transactions.enumerated() {
+            for (index, _) in transactions.enumerated() {
                 transactions[index].show = true
             }
         }

@@ -11,11 +11,13 @@ import SwiftUI
 struct TechChallengeApp: App {
 
     var body: some Scene {
+        let viewModel = TransactionListViewModel()
+        
         WindowGroup {
             TabView {
                 NavigationView {
                     TransactionListView()
-                        .environmentObject(TransactionListViewModel())
+                        .environmentObject(viewModel)
                 }
                 .tabItem {
                     Label("Transactions", systemImage: "list.bullet")
@@ -23,6 +25,7 @@ struct TechChallengeApp: App {
                 
                 NavigationView {
                     InsightsView()
+                        .environmentObject(viewModel)
                 }
                 .tabItem {
                     Label("Insights", systemImage: "chart.pie.fill")

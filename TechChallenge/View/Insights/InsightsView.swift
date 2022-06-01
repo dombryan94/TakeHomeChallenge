@@ -8,11 +8,11 @@
 import SwiftUI
 
 struct InsightsView: View {
-    let transactions: [TransactionModel] = ModelData.sampleTransactions
+    @EnvironmentObject var viewModel: TransactionListViewModel
     
     var body: some View {
         List {
-            RingView(transactions: transactions)
+            RingView(transactions: viewModel.transactions)
                 .scaledToFit()
             
             ForEach(TransactionModel.Category.allCases) { category in
