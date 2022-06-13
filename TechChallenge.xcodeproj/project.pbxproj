@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		3B02742B28462A1000FC7E06 /* SumView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B02742A28462A1000FC7E06 /* SumView.swift */; };
+		3B3009672857BF0F00701534 /* Sequence.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B3009662857BF0F00701534 /* Sequence.swift */; };
 		3B759ECA28453ED900D47EF5 /* TransactionListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B759EC928453ED900D47EF5 /* TransactionListViewModel.swift */; };
 		3B759ECC28453F5100D47EF5 /* FilterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B759ECB28453F5100D47EF5 /* FilterView.swift */; };
 		3B759ECF28461A5D00D47EF5 /* TransactionListViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B759ECE28461A5C00D47EF5 /* TransactionListViewModelTests.swift */; };
@@ -42,6 +43,7 @@
 
 /* Begin PBXFileReference section */
 		3B02742A28462A1000FC7E06 /* SumView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SumView.swift; sourceTree = "<group>"; };
+		3B3009662857BF0F00701534 /* Sequence.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Sequence.swift; sourceTree = "<group>"; };
 		3B759EC928453ED900D47EF5 /* TransactionListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionListViewModel.swift; sourceTree = "<group>"; };
 		3B759ECB28453F5100D47EF5 /* FilterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilterView.swift; sourceTree = "<group>"; };
 		3B759ECE28461A5C00D47EF5 /* TransactionListViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionListViewModelTests.swift; sourceTree = "<group>"; };
@@ -196,6 +198,7 @@
 		3CE226CD26B2E48100B3D085 /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
+				3B3009662857BF0F00701534 /* Sequence.swift */,
 				3CE226BA26B0573C00B3D085 /* Date.swift */,
 				3CE226C026B062BA00B3D085 /* Double.swift */,
 				3CE01C6326B2EBDE0091B7BA /* Color.swift */,
@@ -313,6 +316,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3B3009672857BF0F00701534 /* Sequence.swift in Sources */,
 				3CE01C6226B2E59C0091B7BA /* RingView.swift in Sources */,
 				3B759ECA28453ED900D47EF5 /* TransactionListViewModel.swift in Sources */,
 				3CE226C126B062BA00B3D085 /* Double.swift in Sources */,
